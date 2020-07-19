@@ -13,3 +13,4 @@ Here is a dumped list of notes/thoughts that may or may not be useful later.
     -   Note: prettier will eat empty lines at beginning/end of a block.
 -   Checked coverage report from previous test run - as expected, a chunk of logic is not covered (less than 30% code branches executed).
     -   As a newcomer to this project, I will cover these first to improve confidence and prevent regressions.
+-   Achieved coverage to 100% and 91% branches taken - some else branches not taken but these are not required as there are duplicate wrapped conditions. Committing first then will strip these.

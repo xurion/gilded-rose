@@ -13,7 +13,7 @@ export class Item {
 export class GildedRose {
     items: Array<Item>;
 
-    constructor(items = [] as Array<Item>) {
+    constructor(items: Item[]) {
         this.items = items;
     }
 
@@ -36,7 +36,7 @@ export class GildedRose {
                 }
                 // Affinage cheese or a backstage pass
             } else {
-                //if the quality is already half
+                //if the quality is less than the standard item maximum (ignores 50+ quality legendary items?)
                 if (this.items[i].quality < 50) {
                     //increase quality by 1
                     this.items[i].quality = this.items[i].quality + 1;
@@ -57,7 +57,7 @@ export class GildedRose {
                         if (this.items[i].sellIn < 6) {
                             //another duplicate condition
                             if (this.items[i].quality < 50) {
-                                //increase quality by 1 - looks like this condition could be removed and just rely on < 11 condition above. As long as tests exist
+                                //increase quality by 1
                                 this.items[i].quality =
                                     this.items[i].quality + 1;
                             }
