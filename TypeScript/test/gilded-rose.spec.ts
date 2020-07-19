@@ -154,5 +154,12 @@ describe('Gilded Rose', function () {
 
             expect(item.quality).to.equal(0);
         });
+
+        it('returns the items prop', () => {
+            const items = [new Item('foo', 10, 14)];
+            const gildedRose = new GildedRose(items);
+
+            expect(gildedRose.updateQuality()).to.equal(items);
+        });
     });
 });
