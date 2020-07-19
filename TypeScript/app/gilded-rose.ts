@@ -46,21 +46,13 @@ export class GildedRose {
                     ) {
                         //if the no of days left to sell is 10 or lower
                         if (this.items[i].sellIn < 11) {
-                            //if the quality is already half... duplicate check here
-                            if (this.items[i].quality < 50) {
-                                //increase quality by 1
-                                this.items[i].quality =
-                                    this.items[i].quality + 1;
-                            }
+                            //increase quality by 1
+                            this.items[i].quality = this.items[i].quality + 1;
                         }
                         //there's only 5 or less days left to sell
                         if (this.items[i].sellIn < 6) {
-                            //another duplicate condition
-                            if (this.items[i].quality < 50) {
-                                //increase quality by 1
-                                this.items[i].quality =
-                                    this.items[i].quality + 1;
-                            }
+                            //increase quality by 1
+                            this.items[i].quality = this.items[i].quality + 1;
                         }
                     }
                 }

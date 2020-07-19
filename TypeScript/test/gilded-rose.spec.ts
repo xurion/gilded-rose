@@ -40,6 +40,15 @@ describe('Gilded Rose', function () {
             expect(item.quality).to.equal(80);
         });
 
+        it('does not decrease the legendary item "Sulfuras, Hand of Ragnaros" quality, even if the sellIn is less than 0', () => {
+            const item = new Item('Sulfuras, Hand of Ragnaros', -1, 80);
+            const gildedRose = new GildedRose([item]);
+
+            gildedRose.updateQuality();
+
+            expect(item.quality).to.equal(80);
+        });
+
         it('increases the affinage cheese "Aged Brie" quality by 1', () => {
             const item = new Item('Aged Brie', 10, 20);
             const gildedRose = new GildedRose([item]);
