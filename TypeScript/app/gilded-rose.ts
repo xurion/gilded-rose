@@ -20,21 +20,11 @@ export class GildedRose {
     updateQuality() {
         //loop over every item to asses/update quality
         this.items.forEach((item) => {
-            //everything except affinage cheese and backstage passes
+            // Affinage cheese or a backstage pass
             if (
-                item.name != 'Aged Brie' &&
-                item.name != 'Backstage passes to a TAFKAL80ETC concert'
+                item.name === 'Aged Brie' ||
+                item.name === 'Backstage passes to a TAFKAL80ETC concert'
             ) {
-                //if the item is still worth something
-                if (item.quality > 0) {
-                    //ignore the beautiful legendary items
-                    if (item.name != 'Sulfuras, Hand of Ragnaros') {
-                        // reduce the quality by 1
-                        item.quality = item.quality - 1;
-                    }
-                }
-                // Affinage cheese or a backstage pass
-            } else {
                 //if the quality is less than the standard item maximum (ignores 50+ quality legendary items?)
                 if (item.quality < 50) {
                     //increase quality by 1
@@ -52,6 +42,17 @@ export class GildedRose {
                             //increase quality by 1
                             item.quality = item.quality + 1;
                         }
+                        item.quality = item.quality > 50 ? 50 : item.quality;
+                    }
+                }
+                //everything except affinage cheese and backstage passes
+            } else {
+                //if the item is still worth something
+                if (item.quality > 0) {
+                    //ignore the beautiful legendary items
+                    if (item.name != 'Sulfuras, Hand of Ragnaros') {
+                        // reduce the quality by 1
+                        item.quality = item.quality - 1;
                     }
                 }
             }

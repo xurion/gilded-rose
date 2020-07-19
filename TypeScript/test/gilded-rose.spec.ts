@@ -71,6 +71,19 @@ describe('Gilded Rose', function () {
             expect(item.quality).to.equal(26);
         });
 
+        it('does not increase the pass "Backstage passes to a TAFKAL80ETC concert" quality over 50 if the sellIn is greater than 10', () => {
+            const item = new Item(
+                'Backstage passes to a TAFKAL80ETC concert',
+                11,
+                50
+            );
+            const gildedRose = new GildedRose([item]);
+
+            gildedRose.updateQuality();
+
+            expect(item.quality).to.equal(50);
+        });
+
         it('increases the pass "Backstage passes to a TAFKAL80ETC concert" quality by 2 if the sellIn is less than 11', () => {
             const item = new Item(
                 'Backstage passes to a TAFKAL80ETC concert',
@@ -84,6 +97,19 @@ describe('Gilded Rose', function () {
             expect(item.quality).to.equal(27);
         });
 
+        it('does not increase the pass "Backstage passes to a TAFKAL80ETC concert" quality over 50 if the sellIn is less than 11', () => {
+            const item = new Item(
+                'Backstage passes to a TAFKAL80ETC concert',
+                10,
+                49
+            );
+            const gildedRose = new GildedRose([item]);
+
+            gildedRose.updateQuality();
+
+            expect(item.quality).to.equal(50);
+        });
+
         it('increases the pass "Backstage passes to a TAFKAL80ETC concert" quality by 3 if the sellIn is less than 6', () => {
             const item = new Item(
                 'Backstage passes to a TAFKAL80ETC concert',
@@ -95,6 +121,19 @@ describe('Gilded Rose', function () {
             gildedRose.updateQuality();
 
             expect(item.quality).to.equal(28);
+        });
+
+        it('does not increase the pass "Backstage passes to a TAFKAL80ETC concert" quality over 50 if the sellIn is less than 6', () => {
+            const item = new Item(
+                'Backstage passes to a TAFKAL80ETC concert',
+                5,
+                49
+            );
+            const gildedRose = new GildedRose([item]);
+
+            gildedRose.updateQuality();
+
+            expect(item.quality).to.equal(50);
         });
 
         it('decreases a regular item sellIn by 1', () => {

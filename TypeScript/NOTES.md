@@ -14,3 +14,6 @@ Here is a dumped list of notes/thoughts that may or may not be useful later.
 -   Checked coverage report from previous test run - as expected, a chunk of logic is not covered (less than 30% code branches executed).
     -   As a newcomer to this project, I will cover these first to improve confidence and prevent regressions.
 -   Achieved coverage to 100% and 91% branches taken - some else branches not taken but these are not required as there are duplicate wrapped conditions. Committing first then will strip these.
+-   Found possible bug with requirement: The Quality of an item is never more than 50
+    -   The backstage pass is able to go from 49 to 51.
+    -   Added test to confirm issue and fixed.
