@@ -17,21 +17,32 @@ export class GildedRose {
         this.items = items;
     }
 
+    private isAffinage(item: Item) {
+        return item.name === 'Aged Brie';
+    }
+
+    private isBackstagePass(item: Item) {
+        return item.name === 'Backstage passes to a TAFKAL80ETC concert';
+    }
+
+    private isLegendary(item: Item) {
+        return item.name === 'Sulfuras, Hand of Ragnaros';
+    }
+
+    private isReverseQualityItem(item: Item) {
+        return this.isAffinage(item) || this.isBackstagePass(item);
+    }
+
     updateQuality() {
         //loop over every item to asses/update quality
         this.items.forEach((item) => {
             // Affinage cheese or a backstage pass
-            if (
-                item.name === 'Aged Brie' ||
-                item.name === 'Backstage passes to a TAFKAL80ETC concert'
-            ) {
-                //if the quality is less than the standard item maximum (ignores 50+ quality legendary items?)
+            if (this.isReverseQualityItem(item)) {
+                //if the quality is less than the standard item maximum
                 if (item.quality < 50) {
                     //increase quality by 1
                     item.quality = item.quality + 1;
-                    if (
-                        item.name == 'Backstage passes to a TAFKAL80ETC concert'
-                    ) {
+                    if (this.isBackstagePass(item)) {
                         //if the no of days left to sell is 10 or lower
                         if (item.sellIn < 11) {
                             //increase quality by 1
@@ -45,20 +56,17 @@ export class GildedRose {
                         item.quality = item.quality > 50 ? 50 : item.quality;
                     }
                 }
-                //everything except affinage cheese and backstage passes
-            } else {
+                //everything else except legendary items
+            } else if (!this.isLegendary(item)) {
                 //if the item is still worth something
                 if (item.quality > 0) {
-                    //ignore the beautiful legendary items
-                    if (item.name != 'Sulfuras, Hand of Ragnaros') {
-                        // reduce the quality by 1
-                        item.quality = item.quality - 1;
-                    }
+                    // reduce the quality by 1
+                    item.quality = item.quality - 1;
                 }
             }
 
             //if not legendary
-            if (item.name != 'Sulfuras, Hand of Ragnaros') {
+            if (!this.isLegendary(item)) {
                 //reduce sellIn by 1
                 item.sellIn = item.sellIn - 1;
             }
@@ -66,15 +74,13 @@ export class GildedRose {
             //days left to sell is passed
             if (item.sellIn < 0) {
                 //not affinage cheese
-                if (item.name != 'Aged Brie') {
+                if (!this.isAffinage(item)) {
                     //also not backstage pass
-                    if (
-                        item.name != 'Backstage passes to a TAFKAL80ETC concert'
-                    ) {
+                    if (!this.isBackstagePass(item)) {
                         //these ifs tho
                         if (item.quality > 0) {
                             //srsly
-                            if (item.name != 'Sulfuras, Hand of Ragnaros') {
+                            if (!this.isLegendary(item)) {
                                 //nice, a conclusion
                                 item.quality = item.quality - 1;
                             }
