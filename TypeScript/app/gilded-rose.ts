@@ -40,6 +40,29 @@ export class GildedRose {
         item.quality = item.quality > 50 ? 50 : item.quality;
     }
 
+    private getBackstagePassQualityAdjustment(item: Item) {
+        let qualityAdjustment = 0;
+
+        //more than 10 days left to sell
+        if (item.sellIn > 10) {
+            qualityAdjustment = 1;
+        }
+
+        //10 or less days left to sell
+        if (item.sellIn <= 10) {
+            //increase quality by 1
+            qualityAdjustment = 2;
+        }
+
+        //5 or less days left to sell
+        if (item.sellIn <= 5) {
+            //increase quality by 1
+            qualityAdjustment = 3;
+        }
+
+        return qualityAdjustment;
+    }
+
     updateQuality() {
         //loop over every item to asses/update quality
         this.items.forEach((item) => {
@@ -53,18 +76,10 @@ export class GildedRose {
                 //increase quality by 1
                 let qualityAdjustment = 1;
                 if (this.isBackstagePass(item)) {
-                    //if the no of days left to sell is 10 or lower
-                    if (item.sellIn < 11) {
-                        //increase quality by 1
-                        qualityAdjustment = 2;
-                    }
-                    //there's only 5 or less days left to sell
-                    if (item.sellIn < 6) {
-                        //increase quality by 1
-                        qualityAdjustment = 3;
-                    }
+                    qualityAdjustment = this.getBackstagePassQualityAdjustment(
+                        item
+                    );
                 }
-
                 this.adjustItemQualityBy(item, qualityAdjustment);
                 //everything else
             } else {
@@ -80,20 +95,19 @@ export class GildedRose {
                 return;
             }
 
-            //not affinage cheese
-            if (!this.isAffinage(item)) {
-                //also not backstage pass
-                if (!this.isBackstagePass(item)) {
+            //affinage cheese!
+            if (this.isAffinage(item)) {
+                this.adjustItemQualityBy(item, 1);
+                //not affinage cheese
+            } else {
+                //backstage pass that has expired
+                if (this.isBackstagePass(item)) {
+                    item.quality = 0;
+                    //also not backstage pass
+                } else {
                     //reduce quality
                     this.adjustItemQualityBy(item, -1);
-                    //backstage pass that has expired
-                } else {
-                    //sets quality to 0, but why not explicitly set it to just 0?
-                    this.adjustItemQualityBy(item, -item.quality);
                 }
-                //affinage cheese!
-            } else {
-                this.adjustItemQualityBy(item, 1);
             }
         });
 
