@@ -10,6 +10,11 @@ export class Item {
     }
 }
 
+const AFFINAGE = 'affinage';
+const BACKSTAGE_PASS = 'backstage pass';
+const LEGENDARY = 'legendary';
+const CONJURED = 'conjured ';
+
 export class GildedRose {
     items: Array<Item>;
 
@@ -17,16 +22,37 @@ export class GildedRose {
         this.items = items;
     }
 
-    private isAffinage = (item: Item): boolean => item.name === 'Aged Brie';
+    private itemTypeMap: { [key: string]: string[] } = {
+        [AFFINAGE]: ['Aged Brie'], //add affinage here
+        [BACKSTAGE_PASS]: ['Backstage passes to a TAFKAL80ETC concert'], //add backstage passes here
+        [LEGENDARY]: ['Sulfuras, Hand of Ragnaros'], //add legendary items here
+        [CONJURED]: ['Conjured Mana Cake'], //add conjured items here
+    };
+
+    private getItemType = (item: Item): string => {
+        let typeResult = '';
+
+        for (const key in this.itemTypeMap) {
+            if (this.itemTypeMap[key].indexOf(item.name) >= 0) {
+                typeResult = key;
+                break;
+            }
+        }
+
+        return typeResult;
+    };
+
+    private isAffinage = (item: Item): boolean =>
+        this.getItemType(item) === AFFINAGE;
 
     private isBackstagePass = (item: Item): boolean =>
-        item.name === 'Backstage passes to a TAFKAL80ETC concert';
+        this.getItemType(item) === BACKSTAGE_PASS;
 
     private isLegendary = (item: Item): boolean =>
-        item.name === 'Sulfuras, Hand of Ragnaros';
+        this.getItemType(item) === LEGENDARY;
 
     private isConjured = (item: Item): boolean =>
-        item.name === 'Conjured Mana Cake';
+        this.getItemType(item) === CONJURED;
 
     private isReverseQualityItem = (item: Item): boolean =>
         this.isAffinage(item) || this.isBackstagePass(item);
@@ -41,15 +67,13 @@ export class GildedRose {
     }
 
     private getBackstagePassQualityAdjustment(item: Item): number {
-        if (item.sellIn > 10) {
-            return 1;
-        } else if (item.sellIn <= 5) {
+        if (item.sellIn <= 5) {
             return 3;
         } else if (item.sellIn <= 10) {
             return 2;
         }
 
-        return 0;
+        return 1;
     }
 
     updateQuality() {
