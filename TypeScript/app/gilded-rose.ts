@@ -17,61 +17,45 @@ export class GildedRose {
         this.items = items;
     }
 
-    private isAffinage(item: Item) {
-        return item.name === 'Aged Brie';
-    }
+    private isAffinage = (item: Item): boolean => item.name === 'Aged Brie';
 
-    private isBackstagePass(item: Item) {
-        return item.name === 'Backstage passes to a TAFKAL80ETC concert';
-    }
+    private isBackstagePass = (item: Item): boolean =>
+        item.name === 'Backstage passes to a TAFKAL80ETC concert';
 
-    private isLegendary(item: Item) {
-        return item.name === 'Sulfuras, Hand of Ragnaros';
-    }
+    private isLegendary = (item: Item): boolean =>
+        item.name === 'Sulfuras, Hand of Ragnaros';
 
-    private isConjured(item: Item) {
-        return item.name === 'Conjured Mana Cake';
-    }
+    private isConjured = (item: Item): boolean =>
+        item.name === 'Conjured Mana Cake';
 
-    private isReverseQualityItem(item: Item) {
-        return this.isAffinage(item) || this.isBackstagePass(item);
-    }
+    private isReverseQualityItem = (item: Item): boolean =>
+        this.isAffinage(item) || this.isBackstagePass(item);
 
-    private adjustItemQualityBy(item: Item, adjustment: number) {
+    private adjustItemQualityBy(item: Item, adjustment: number): void {
         if (item.quality > 0) {
             item.quality = item.quality + adjustment;
         }
+
         item.quality = item.quality > 50 ? 50 : item.quality;
         item.quality = item.quality < 0 ? 0 : item.quality;
     }
 
-    private getBackstagePassQualityAdjustment(item: Item) {
-        let qualityAdjustment = 0;
-
-        //more than 10 days left to sell
+    private getBackstagePassQualityAdjustment(item: Item): number {
         if (item.sellIn > 10) {
-            qualityAdjustment = 1;
+            return 1;
+        } else if (item.sellIn <= 5) {
+            return 3;
+        } else if (item.sellIn <= 10) {
+            return 2;
         }
 
-        //10 or less days left to sell
-        if (item.sellIn <= 10) {
-            //increase quality by 1
-            qualityAdjustment = 2;
-        }
-
-        //5 or less days left to sell
-        if (item.sellIn <= 5) {
-            //increase quality by 1
-            qualityAdjustment = 3;
-        }
-
-        return qualityAdjustment;
+        return 0;
     }
 
     updateQuality() {
         //loop over every item to asses/update quality
         this.items.forEach((item) => {
-            //legendary never changes
+            //legendary, like war, never changes
             if (this.isLegendary(item)) {
                 return;
             }
