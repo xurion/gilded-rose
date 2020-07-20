@@ -29,6 +29,10 @@ export class GildedRose {
         return item.name === 'Sulfuras, Hand of Ragnaros';
     }
 
+    private isConjured(item: Item) {
+        return item.name === 'Conjured Mana Cake';
+    }
+
     private isReverseQualityItem(item: Item) {
         return this.isAffinage(item) || this.isBackstagePass(item);
     }
@@ -38,6 +42,7 @@ export class GildedRose {
             item.quality = item.quality + adjustment;
         }
         item.quality = item.quality > 50 ? 50 : item.quality;
+        item.quality = item.quality < 0 ? 0 : item.quality;
     }
 
     private getBackstagePassQualityAdjustment(item: Item) {
@@ -71,26 +76,31 @@ export class GildedRose {
                 return;
             }
 
+            let qualityAdjustment = 0;
             // Affinage cheese or a backstage pass
             if (this.isReverseQualityItem(item)) {
                 //increase quality by 1
-                let qualityAdjustment = 1;
+                qualityAdjustment = 1;
                 if (this.isBackstagePass(item)) {
                     qualityAdjustment = this.getBackstagePassQualityAdjustment(
                         item
                     );
                 }
-                this.adjustItemQualityBy(item, qualityAdjustment);
+                //conjured items
+            } else if (this.isConjured(item)) {
+                qualityAdjustment = -2;
                 //everything else
             } else {
                 // reduce the quality by 1
-                this.adjustItemQualityBy(item, -1);
+                qualityAdjustment = -1;
             }
+
+            this.adjustItemQualityBy(item, qualityAdjustment);
 
             //reduce sellIn by 1
             item.sellIn = item.sellIn - 1;
 
-            //days left to sell is passed
+            //exit now as there is still time to sell this item
             if (item.sellIn >= 0) {
                 return;
             }
@@ -98,16 +108,15 @@ export class GildedRose {
             //affinage cheese!
             if (this.isAffinage(item)) {
                 this.adjustItemQualityBy(item, 1);
-                //not affinage cheese
-            } else {
+            } else if (this.isConjured(item)) {
+                this.adjustItemQualityBy(item, -2);
                 //backstage pass that has expired
-                if (this.isBackstagePass(item)) {
-                    item.quality = 0;
-                    //also not backstage pass
-                } else {
-                    //reduce quality
-                    this.adjustItemQualityBy(item, -1);
-                }
+            } else if (this.isBackstagePass(item)) {
+                item.quality = 0;
+                //everything else
+            } else {
+                //reduce quality
+                this.adjustItemQualityBy(item, -1);
             }
         });
 

@@ -200,5 +200,32 @@ describe('Gilded Rose', function () {
 
             expect(gildedRose.updateQuality()).to.equal(items);
         });
+
+        it('decreases the conjured item "Conjured Mana Cake" quality by 2', () => {
+            const item = new Item('Conjured Mana Cake', 3, 6);
+            const gildedRose = new GildedRose([item]);
+
+            gildedRose.updateQuality();
+
+            expect(item.quality).to.equal(4);
+        });
+
+        it('decreases the conjured item "Conjured Mana Cake" quality by 4 when the sellIn is less than 0', () => {
+            const item = new Item('Conjured Mana Cake', 0, 10);
+            const gildedRose = new GildedRose([item]);
+
+            gildedRose.updateQuality();
+
+            expect(item.quality).to.equal(6);
+        });
+
+        it('does not decrease the conjured item "Conjured Mana Cake" quality below 0', () => {
+            const item = new Item('Conjured Mana Cake', 3, 1);
+            const gildedRose = new GildedRose([item]);
+
+            gildedRose.updateQuality();
+
+            expect(item.quality).to.equal(0);
+        });
     });
 });

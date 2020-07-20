@@ -17,3 +17,8 @@ Here is a dumped list of notes/thoughts that may or may not be useful later.
 -   Found possible bug with requirement: The Quality of an item is never more than 50
     -   The backstage pass is able to go from 49 to 51.
     -   Added test to confirm issue and fixed.
+-   Moved the repeated name references of items to private methods to aid in readability.
+-   Removed all legendary checks in favour of a single check at the start of the forEach.
+-   Added adjustItemQualityBy private method to take care of the increase/decrease quality.
+-   Added conjured item.
+-   Realised conjured items can go below zero quality. Covered and fixed.
