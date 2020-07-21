@@ -155,12 +155,12 @@ describe('Gilded Rose', function () {
         });
 
         it('increases the affinage cheese "Aged Brie" quality by 2 when the sellIn value is below 0', () => {
-            const item = new Item('Aged Brie', -1, 15);
+            const item = new Item('Aged Brie', -1, 0);
             const gildedRose = new GildedRose([item]);
 
             gildedRose.updateQuality();
 
-            expect(item.quality).to.equal(17);
+            expect(item.quality).to.equal(2);
         });
 
         it('does not increase the affinage cheese "Aged Brie" quality past 50', () => {

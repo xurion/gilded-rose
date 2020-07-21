@@ -22,3 +22,7 @@ Here is a dumped list of notes/thoughts that may or may not be useful later.
 -   Added adjustItemQualityBy private method to take care of the increase/decrease quality.
 -   Added conjured item.
 -   Realised conjured items can go below zero quality. Covered and fixed.
+-   Refactored a few functions for clarity.
+-   Stored item types in constants and used these to create a map of item types by name, rather than checking string names each time.
+-   Noticed another bug with aged brie where it would not increase in quality.
+    -   This was due to a random unnecessary if. Adjusted test and fixed.

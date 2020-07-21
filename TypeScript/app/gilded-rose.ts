@@ -58,10 +58,7 @@ export class GildedRose {
         this.isAffinage(item) || this.isBackstagePass(item);
 
     private adjustItemQualityBy(item: Item, adjustment: number): void {
-        if (item.quality > 0) {
-            item.quality = item.quality + adjustment;
-        }
-
+        item.quality = item.quality + adjustment;
         item.quality = item.quality > 50 ? 50 : item.quality;
         item.quality = item.quality < 0 ? 0 : item.quality;
     }
